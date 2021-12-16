@@ -24,6 +24,7 @@ describe('Firebase app functionalities', () => {
             .next().click()
         cy.wait('@get').its('response.statusCode').should('eq', 200)
         
+        
         cy.get('.products-found').find('span').then(($noOfPrducts) => {
             if($noOfPrducts.is(":contains('0 Product(s) found.')"))
             {   
