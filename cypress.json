@@ -1,0 +1,6 @@
+{
+    "reporter": "mochawesome",
+    "env": {
+        "url": "https://react-shopping-cart-67954.firebaseapp.com/"
+    }
+}
