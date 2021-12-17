@@ -23,7 +23,6 @@ describe('React shopping app functionalities', () => {
             .next().click()
         cy.wait('@get').its('response.statusCode').should('eq', 200)
 
-
         cy.get('.products-found').find('span').then(($noOfPrducts) => {
             if ($noOfPrducts.is(":contains('0 Product(s) found.')")) {
                 cy.log('No items found on selected Size')
@@ -49,8 +48,9 @@ describe('React shopping app functionalities', () => {
         cy.get('.shelf-item').then(($products) => {
             cy.log($products.length)
             cy.get($products).find('.shelf-stopper').each(($el) => {
-                cy.get($el).click()  //adding to cart
-                cy.get('.float-cart__close-btn').click()//closing cart window
+                cy.get($el).click({force: true}).then(()=>{
+                    cy.get('.float-cart__close-btn').click()
+                })                
             })
         })
     }) 
@@ -66,7 +66,6 @@ describe('React shopping app functionalities', () => {
         })
 
         cy.get('.float-cart > .bag--float-cart-closed').find('span').invoke('text').then(($el) => {
-
             cartlength = Number($el)
         }).then(() => {
             cy.log(cartlength)
