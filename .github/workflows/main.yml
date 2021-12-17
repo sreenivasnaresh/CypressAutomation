@@ -13,6 +13,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
+          node version: '14'
       - run: npm install
       - run: npm run test
       
