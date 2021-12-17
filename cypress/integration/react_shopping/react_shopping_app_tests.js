@@ -1,5 +1,5 @@
 /// <reference types="Cypress" />
-describe('Firebase app functionalities', () => {
+describe('React shopping app functionalities', () => {
 
     beforeEach(() => {
         cy.intercept('GET', '**/products.json').as('get')
@@ -11,8 +11,7 @@ describe('Firebase app functionalities', () => {
         })
     })
 
-    it('test case to Open website', () => {
-
+    it('Test case to open website', () => {
         cy.visit(Cypress.env('url'));
         cy.wait('@get').its('response.statusCode').should('eq', 200)
     })
@@ -23,15 +22,13 @@ describe('Firebase app functionalities', () => {
         cy.get('.filters > .filters-available-size').find(`[value='${size}']`, { timeout: 10000 })
             .next().click()
         cy.wait('@get').its('response.statusCode').should('eq', 200)
-        
-        
+
+
         cy.get('.products-found').find('span').then(($noOfPrducts) => {
-            if($noOfPrducts.is(":contains('0 Product(s) found.')"))
-            {   
+            if ($noOfPrducts.is(":contains('0 Product(s) found.')")) {
                 cy.log('No items found on selected Size')
             }
-            else
-            {
+            else {
                 cy.log('Items found on selected Size')
             }
         })
@@ -43,36 +40,40 @@ describe('Firebase app functionalities', () => {
         })
     });
     
-    
-    //Selecting Products order
     it('Functionality to select order by of products', () => {
         cy.get('select').select(self.data.orderby).should('be.visible');
         cy.wait('@get').its('response.statusCode').should('eq',200)
     })
 
-
     it('Functionality to select products which has Free Shipping label', () => {
-        //let lenthOfProd = 0;
         cy.get('.shelf-item').then(($products) => {
             cy.log($products.length)
-            // lenthOfProd = $products.length
-
-            //let randomVal = Math.floor(Math.random() * lenthOfProd)
             cy.get($products).find('.shelf-stopper').each(($el) => {
                 cy.get($el).click()  //adding to cart
                 cy.get('.float-cart__close-btn').click()//closing cart window
             })
-        ////////////////////////////////////////////////////           
-        //count on opened Cart
-       /* let prodCount =  $products.length// free shipping count on main page
-        let cartLength = cy.get('.bag--float-cart-closed > .bag__quantity')
-            //let cartCount = cartLength.length
-            //expect(prodCount).to.equal(cartLength)
-       
-         */
         })
     }) 
     
+    it('Fuctionality to compare proucts we have selected and products added to cart', () => {
+        let productlenth;
+        let cartlength;
+        cy.get('.shelf-item').find('.shelf-stopper').then(($prodlenght) => {
+
+            productlenth = $prodlenght.length
+        }).then(() => {
+            cy.log(productlenth)
+        })
+
+        cy.get('.float-cart > .bag--float-cart-closed').find('span').invoke('text').then(($el) => {
+
+            cartlength = Number($el)
+        }).then(() => {
+            cy.log(cartlength)
+            expect(productlenth).to.equal(cartlength)
+        })
+    })
+
     it('Functionality to increase quantity of products',()=>{
         cy.get('.bag--float-cart-closed').click()
         cy.get('.float-cart__content > .float-cart__shelf-container').find('.shelf-item').each(($el) =>{
@@ -87,11 +88,12 @@ describe('Firebase app functionalities', () => {
         })
     })
 
-    it('Functionality to remove product from cart', () =>{
-        cy.get('.float-cart__shelf-container > .shelf-item > .shelf-item__del').should('be.visible').eq(0).click()
+    it('Functionality to remove product from cart', () => {
+        cy.get('.float-cart__shelf-container > .shelf-item > .shelf-item__del')
+            .should('be.visible').eq(0).click()
     })
 
-    it('Functionality to sum all the products which are in cart and compare with SubTotoal', () => {
+    it('Functionality to sum all the products which are in cart and compare with SubTotoal & checkout', () => {
         let sum = 0;
         let subTotal = 0;
         cy.get('.shelf-item > .shelf-item__price > p').each(($el) => {
@@ -118,5 +120,6 @@ describe('Firebase app functionalities', () => {
             cy.log(subTotal)
             expect(sum).to.equal(subTotal)
         })
+        cy.contains('Checkout').click()
     })
 })
