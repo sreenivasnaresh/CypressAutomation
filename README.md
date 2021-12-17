@@ -1,5 +1,5 @@
 # CI Status
-![example workflow] (https://github.com/sreenivasnaresh/CypressAutomation/actions/workflow/main.yml/badge.svg)
+[![Cypress Tests](https://github.com/sreenivasnaresh/CypressAutomation/actions/workflows/main.yml/badge.svg)](https://github.com/sreenivasnaresh/CypressAutomation/actions/workflows/main.yml)
 
 # **Automation for React shopping app using cypress**
 ## Installation
