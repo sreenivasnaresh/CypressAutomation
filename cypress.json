@@ -1,6 +1,7 @@
 {
     "reporter": "mochawesome",
     "env": {
-        "url": "https://react-shopping-cart-67954.firebaseapp.com/"
+        "url": "https://react-shopping-cart-67954.firebaseapp.com/",
+        "app_url": "https://petstore.octoperf.com/actions/Catalog.action"
     }
 }
